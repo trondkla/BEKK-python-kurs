@@ -15,10 +15,9 @@ def timed(fn):
     @wraps(fn)
     def do(*args, **kwargs):
         before = time()
-        fn(*args, **kwargs)
-        after = time()
-        
-        print "%s used %s s" % (fn.__name__, after-before)
+        result = fn(*args, **kwargs)
+        print "%s used %s s" % (fn.__name__, time()-before)
+        return result
     return do
 
 from time import sleep
@@ -32,9 +31,9 @@ timed_func()
 
 def deprecated(fn):
     @wraps(fn)
-    def do():
+    def do(*args, **kwargs):
         print "\nNB! %s is deprecated" % fn.__name__
-        fn()
+        return fn(*args, **kwargs)
     return do
 
 @deprecated
